@@ -19,5 +19,9 @@ namespace TrashCollector.Models
         [ForeignKey("Address")]
         public int Address_Id { get; set; }
         public Address Address { get; set; }
+        [NotMapped]
+        public IEnumerable<IdentityUser> IdentityUsers { get; set; }
+        [NotMapped]
+        public IEnumerable<Address> Addresses { get; set; }
     }
 }

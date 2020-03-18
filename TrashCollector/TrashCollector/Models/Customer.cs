@@ -17,5 +17,7 @@ namespace TrashCollector.Models
         [ForeignKey("IdentityUser")]
         public string IdentityUser_Id { get; set; }
         public IdentityUser IdentityUser { get; set; }
+        [NotMapped]
+        public IEnumerable<IdentityUser> IdentityUsers { get; set; }
     }
 }

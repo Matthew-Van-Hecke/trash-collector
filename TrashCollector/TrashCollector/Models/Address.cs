@@ -17,5 +17,7 @@ namespace TrashCollector.Models
         [ForeignKey("USState")]
         public int USStateId { get; set; }
         public USState State { get; set; }
+        [NotMapped]
+        public IEnumerable<USState> USStates { get; set; }
     }
 }
