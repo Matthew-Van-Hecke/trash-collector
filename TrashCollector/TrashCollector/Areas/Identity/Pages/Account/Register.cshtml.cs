@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -113,8 +114,17 @@ namespace TrashCollector.Areas.Identity.Pages.Account
                     }
                     else
                     {
+                        var currentUserRole = Input.Role;
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect("~/Customers/Create");
+                        if (currentUserRole == "Customer")
+                        {
+                            return LocalRedirect("~/Customers/Create");
+                        }
+                        else if (currentUserRole == "Employee")
+                        {
+                            return LocalRedirect("~/Employees/Create");
+                        }
+                        return LocalRedirect(returnUrl);
                     }
                 }
                 foreach (var error in result.Errors)
