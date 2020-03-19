@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TrashCollector.Data;
+using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
     public class EmployeesController : Controller
     {
-        // GET: Employees
+        private readonly ApplicationDbContext _context;
+        public EmployeesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public ActionResult Index()
         {
-            return View();
+            string currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
+            return View(employee);
         }
 
         // GET: Employees/Details/5
@@ -24,23 +33,28 @@ namespace TrashCollector.Controllers
         // GET: Employees/Create
         public ActionResult Create()
         {
-            return View();
+            string idForNewEmployee = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Employee employee = new Employee()
+            {
+                IdentityUser_Id = idForNewEmployee
+            };
+            return View(employee);
         }
 
         // POST: Employees/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Employee employee)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                _context.Employees.Add(employee);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(employee);
             }
         }
 
