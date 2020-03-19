@@ -28,12 +28,36 @@ namespace TrashCollector.Controllers
         {
             return View();
         }
+        public ActionResult Create()
+        {
+            var identityUserID = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Customer customer = new Customer()
+            {
+                IdentityUser_Id = identityUserID
+            };
+            return View(customer);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateCustomer(Customer customer)
+        {
+            try
+            {
+                _context.Customers.Add(customer);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View(new Customer());
+            }
+        }
 
         public ActionResult CreateAddress()
         {
             List<USState> uSStates = _context.USStates.ToList();
-            var currentUser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var customerId = _context.Customers.FirstOrDefault(c => c.IdentityUser.Equals(currentUser)).Id;
+            string currentUser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customerId = _context.Customers.FirstOrDefault(c => c.IdentityUser.Id.Equals(currentUser)).Id;
             Address address = new Address()
             {
                 USStates = uSStates,
