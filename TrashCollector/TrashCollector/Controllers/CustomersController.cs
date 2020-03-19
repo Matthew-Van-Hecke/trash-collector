@@ -21,8 +21,7 @@ namespace TrashCollector.Controllers
             return View();
         }
 
-        // GET: Customers/Create
-        public ActionResult Create()
+        public ActionResult CreateAddress()
         {
             return View();
         }
@@ -30,7 +29,7 @@ namespace TrashCollector.Controllers
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult CreateAddress(IFormCollection collection)
         {
             try
             {
