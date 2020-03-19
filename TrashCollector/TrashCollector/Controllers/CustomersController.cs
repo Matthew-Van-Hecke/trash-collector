@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +32,12 @@ namespace TrashCollector.Controllers
         public ActionResult CreateAddress()
         {
             List<USState> uSStates = _context.USStates.ToList();
-            List<Customer> customers = _context.Customers.ToList();
+            var currentUser = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customerId = _context.Customers.FirstOrDefault(c => c.IdentityUser.Equals(currentUser)).Id;
             Address address = new Address()
             {
                 USStates = uSStates,
-                Customers = customers
+                Customer_Id = customerId
             };
             return View(address);
         }
