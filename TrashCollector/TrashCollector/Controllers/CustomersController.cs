@@ -4,11 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TrashCollector.Data;
+using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
     public class CustomersController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public CustomersController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         // GET: Customers
         public ActionResult Index()
         {
@@ -23,28 +30,35 @@ namespace TrashCollector.Controllers
 
         public ActionResult CreateAddress()
         {
-            return View();
+            List<USState> uSStates = _context.USStates.ToList();
+            List<Customer> customers = _context.Customers.ToList();
+            Address address = new Address()
+            {
+                USStates = uSStates,
+                Customers = customers
+            };
+            return View(address);
         }
 
         // POST: Customers/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateAddress(IFormCollection collection)
+        public ActionResult CreateAddress(Address address)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                _context.Addresses.Add(address);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(new Address());
             }
         }
 
         // GET: Customers/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult EditUserInformation(int id)
         {
             return View();
         }
@@ -52,7 +66,7 @@ namespace TrashCollector.Controllers
         // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult EditUserInformation(int id, IFormCollection collection)
         {
             try
             {

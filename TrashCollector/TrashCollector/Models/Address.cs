@@ -22,5 +22,7 @@ namespace TrashCollector.Models
         public Customer Customer { get; set; }
         [NotMapped]
         public IEnumerable<USState> USStates { get; set; }
+        [NotMapped]
+        public IEnumerable<Customer> Customers { get; set; }
     }
 }
