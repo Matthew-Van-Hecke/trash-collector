@@ -20,7 +20,8 @@ namespace TrashCollector.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            return View();
+            Customer customer = _context.Customers.FirstOrDefault(c => c.IdentityUser_Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            return View(customer);
         }
 
         // GET: Customers/Details/5
