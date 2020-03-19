@@ -39,7 +39,7 @@ namespace TrashCollector.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateCustomer(Customer customer)
+        public ActionResult Create(Customer customer)
         {
             try
             {
