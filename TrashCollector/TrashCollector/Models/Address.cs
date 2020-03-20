@@ -14,12 +14,14 @@ namespace TrashCollector.Models
         public string Street_Number_and_Name { get; set; }
         public string City { get; set; }
         public int Zip_Code { get; set; }
-        [ForeignKey("USState")]
+        [ForeignKey("State")]
         public int USStateId { get; set; }
         public USState State { get; set; }
         [ForeignKey("Customer")]
         public int Customer_Id { get; set; }
         public Customer Customer { get; set; }
+        [NotMapped]
+        public string Single_Line_Address { get; set; }
         [NotMapped]
         public IEnumerable<USState> USStates { get; set; }
         [NotMapped]

@@ -85,7 +85,19 @@ namespace TrashCollector.Controllers
         }
         public ActionResult CreatePickup()
         {
-            return View();
+            string identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            IEnumerable<Day> days = _context.Days;
+            IEnumerable<Address> addresses = _context.Addresses.Where(a => a.Customer_Id == _context.Customers.FirstOrDefault(c => c.IdentityUser_Id == identityUserId).Id);
+            foreach (Address address in addresses)
+            {
+                address.Single_Line_Address = address.Street_Number_and_Name + ", " + address.City + ", " + _context.USStates.FirstOrDefault(s => s.Id == address.USStateId).Name + ", " + address.Zip_Code;
+            }
+            Pickup pickup = new Pickup()
+            {
+                Days = days,
+                Addresses = addresses
+            };
+            return View(pickup);
         }
 
         // GET: Customers/Edit/5

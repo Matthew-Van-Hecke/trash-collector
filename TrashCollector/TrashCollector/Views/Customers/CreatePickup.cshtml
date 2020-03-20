@@ -13,32 +13,14 @@
     <div class="col-md-4">
         <form asp-action="CreatePickup">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Customer_Id" class="control-label"></label>
-                <select asp-for="Customer_Id" class ="form-control" asp-items="ViewBag.Customer_Id"></select>
-            </div>
+            <input type="hidden" asp-for="Customer_Id" />
             <div class="form-group">
                 <label asp-for="Address_Id" class="control-label"></label>
-                <select asp-for="Address_Id" class ="form-control" asp-items="ViewBag.Address_Id"></select>
+                <select asp-for="Address_Id" class ="form-control" asp-items='new SelectList(Model.Addresses, "Id", "Single_Line_Address")'></select>
             </div>
             <div class="form-group">
                 <label asp-for="Day_Id" class="control-label"></label>
-                <select asp-for="Day_Id" class ="form-control" asp-items="ViewBag.Day_Id"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Start_Of_Pickup_Suspension" class="control-label"></label>
-                <input asp-for="Start_Of_Pickup_Suspension" class="form-control" />
-                <span asp-validation-for="Start_Of_Pickup_Suspension" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="End_Of_Pickup_Suspension" class="control-label"></label>
-                <input asp-for="End_Of_Pickup_Suspension" class="form-control" />
-                <span asp-validation-for="End_Of_Pickup_Suspension" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Date_Of_Extra_Pickup" class="control-label"></label>
-                <input asp-for="Date_Of_Extra_Pickup" class="form-control" />
-                <span asp-validation-for="Date_Of_Extra_Pickup" class="text-danger"></span>
+                <select asp-for="Day_Id" class ="form-control" asp-items='new SelectList(Model.Days, "Id", "Name")'></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

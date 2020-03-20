@@ -25,5 +25,7 @@ namespace TrashCollector.Models
         public DateTime Date_Of_Extra_Pickup { get; set; }
         [NotMapped]
         public IEnumerable<Day> Days { get; set; }
+        [NotMapped]
+        public IEnumerable<Address> Addresses { get; set; }
     }
 }
