@@ -133,18 +133,37 @@ namespace TrashCollector.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult RequestOneTimeExtraPickup(Pickup pickup)
         {
-            //try
-            //{
+            try
+            {
                 _context.Pickups.Update(pickup);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
-            //}
-            //catch
-            //{
-            //    return View(pickup.Id);
-            //}
+            }
+            catch
+            {
+                return View(pickup.Id);
+            }
         }
-
+        public ActionResult RequestTemporarySuspension(int pickupId)
+        {
+            Pickup pickup = _context.Pickups.First(p => p.Id == pickupId);
+            return View(pickup);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RequestTemporarySuspension(Pickup pickup)
+        {
+            try
+            {
+                _context.Pickups.Update(pickup);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View(pickup.Id);
+            }
+        }
         // GET: Customers/Edit/5
         public ActionResult EditUserInformation(int id)
         {
