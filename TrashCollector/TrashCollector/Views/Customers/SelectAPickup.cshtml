@@ -1,0 +1,41 @@
+﻿@model TrashCollector.Models.Customer
+
+@{
+    ViewData["Title"] = "SelectAPickup";
+    Layout = "~/Views/Shared/_Layout_Customer.cshtml";
+}
+
+<h1>SelectAPickup</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Address
+            </th>
+            <th>
+                Day
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pickup in Model.Pickups) {
+            <tr>
+                <td>
+                    @pickup.Address.City
+                </td>
+                <td>
+                    @pickup.Day.Name
+                </td>
+                <td>
+                    <a asp-action="RequestOneTimeExtraPickup" asp-route-id="@pickup.Id">Add A One Time Pickup At This Address</a> |
+                    <a asp-action="Details" asp-route-id="@pickup.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@pickup.Id">Delete</a>
+                </td>
+            </tr>
+}
+    </tbody>
+</table>

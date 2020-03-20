@@ -19,5 +19,7 @@ namespace TrashCollector.Models
         public IdentityUser IdentityUser { get; set; }
         [NotMapped]
         public IEnumerable<IdentityUser> IdentityUsers { get; set; }
+        [NotMapped]
+        public IEnumerable<Pickup> Pickups { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TrashCollector.Data;
 using TrashCollector.Models;
 
@@ -114,6 +115,14 @@ namespace TrashCollector.Controllers
             {
                 return View(pickup);
             }
+        }
+        //localhost/Customers/SelectAPickup
+        public ActionResult SelectAPickup()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Customer customer = _context.Customers.FirstOrDefault(c => c.IdentityUser_Id == userId);
+            customer.Pickups = _context.Pickups.Include(c => c.Address).Include(p => p.Day).Where(p => p.Customer_Id == customer.Id).ToList();
+            return View(customer);
         }
         public ActionResult RequestOneTimeExtraPickup(int pickupId)
         {

@@ -21,6 +21,9 @@ namespace TrashCollector.Controllers
         {
             string currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
+
+            //DateTime.Now
+
             return View(employee);
         }
 
