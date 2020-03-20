@@ -20,9 +20,9 @@ namespace TrashCollector.Models
         [ForeignKey("Day")]
         public int Day_Id { get; set; }
         public Day Day { get; set; }
-        public DateTime Start_Of_Pickup_Suspension { get; set; }
-        public DateTime End_Of_Pickup_Suspension { get; set; }
-        public DateTime Date_Of_Extra_Pickup { get; set; }
+        public DateTime? Start_Of_Pickup_Suspension { get; set; }
+        public DateTime? End_Of_Pickup_Suspension { get; set; }
+        public DateTime? Date_Of_Extra_Pickup { get; set; }
         [NotMapped]
         public IEnumerable<Day> Days { get; set; }
         [NotMapped]

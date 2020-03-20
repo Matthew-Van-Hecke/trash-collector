@@ -94,10 +94,26 @@ namespace TrashCollector.Controllers
             }
             Pickup pickup = new Pickup()
             {
+                Customer_Id = _context.Customers.FirstOrDefault(c => c.IdentityUser_Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Id,
                 Days = days,
                 Addresses = addresses
             };
             return View(pickup);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreatePickup(Pickup pickup)
+        {
+            //try
+            //{
+                _context.Pickups.Add(pickup);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            //}
+            //catch
+            //{
+            //    return View(pickup);
+            //}
         }
 
         // GET: Customers/Edit/5

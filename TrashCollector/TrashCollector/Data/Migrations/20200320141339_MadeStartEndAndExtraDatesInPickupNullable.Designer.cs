@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200320141339_MadeStartEndAndExtraDatesInPickupNullable")]
+    partial class MadeStartEndAndExtraDatesInPickupNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e6c4cf1e-25fb-4631-8239-8f54961acf7e",
-                            ConcurrencyStamp = "ed2713ca-c903-4933-9a7a-1c5e0a2f0688",
+                            Id = "24fc53aa-7e4d-4e07-ae3f-d4f7262874be",
+                            ConcurrencyStamp = "e7884ef1-e7b8-4a97-8fbb-29b2d41ee0fa",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "399a9fdb-38b4-452f-a46f-3fb46a311c8b",
-                            ConcurrencyStamp = "c106aa4c-1782-4ae0-8c9f-66235892368f",
+                            Id = "acb4cd9f-386e-453e-a75a-e00e6d7608e6",
+                            ConcurrencyStamp = "6030451f-0804-41e0-af5c-84122832e828",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -373,16 +375,16 @@ namespace TrashCollector.Data.Migrations
                     b.Property<int>("Customer_Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Date_Of_Extra_Pickup")
+                    b.Property<DateTime>("Date_Of_Extra_Pickup")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Day_Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("End_Of_Pickup_Suspension")
+                    b.Property<DateTime>("End_Of_Pickup_Suspension")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("Start_Of_Pickup_Suspension")
+                    b.Property<DateTime>("Start_Of_Pickup_Suspension")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
