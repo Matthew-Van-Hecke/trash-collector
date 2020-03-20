@@ -31,8 +31,8 @@
                     @pickup.Day.Name
                 </td>
                 <td>
-                    <a asp-action="RequestOneTimeExtraPickup" asp-route-id="@pickup.Id">Add A One Time Pickup At This Address</a> |
-                    <a asp-action="Details" asp-route-id="@pickup.Id">Details</a> |
+                    <a asp-action="RequestOneTimeExtraPickup" asp-route-pickupId="@pickup.Id">Add A One Time Pickup At This Address</a> |
+                    <a asp-action="Details" asp-route-Id="@pickup.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@pickup.Id">Delete</a>
                 </td>
             </tr>

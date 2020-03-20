@@ -14,26 +14,11 @@
         <form asp-action="RequestOneTimeExtraPickup">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Address_Id" class="control-label"></label>
-                <select asp-for="Address_Id" class="form-control" asp-items="ViewBag.Address_Id"></select>
-                <span asp-validation-for="Address_Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Day_Id" class="control-label"></label>
-                <select asp-for="Day_Id" class="form-control" asp-items="ViewBag.Day_Id"></select>
-                <span asp-validation-for="Day_Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Start_Of_Pickup_Suspension" class="control-label"></label>
-                <input asp-for="Start_Of_Pickup_Suspension" class="form-control" />
-                <span asp-validation-for="Start_Of_Pickup_Suspension" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="End_Of_Pickup_Suspension" class="control-label"></label>
-                <input asp-for="End_Of_Pickup_Suspension" class="form-control" />
-                <span asp-validation-for="End_Of_Pickup_Suspension" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Customer_Id" />
+            <input type="hidden" asp-for="Address_Id" />
+            <input type="hidden" asp-for="Day_Id" />
+            <input type="hidden" asp-for="Start_Of_Pickup_Suspension" />
+            <input type="hidden" asp-for="End_Of_Pickup_Suspension" />
             <div class="form-group">
                 <label asp-for="Date_Of_Extra_Pickup" class="control-label"></label>
                 <input asp-for="Date_Of_Extra_Pickup" class="form-control" />

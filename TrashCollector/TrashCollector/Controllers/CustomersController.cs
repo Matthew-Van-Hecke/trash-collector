@@ -126,8 +126,23 @@ namespace TrashCollector.Controllers
         }
         public ActionResult RequestOneTimeExtraPickup(int pickupId)
         {
-            Pickup pickup = _context.Pickups.FirstOrDefault(p => p.Id == pickupId);
+            Pickup pickup = _context.Pickups.First(p => p.Id == pickupId);
             return View(pickup);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RequestOneTimeExtraPickup(Pickup pickup)
+        {
+            //try
+            //{
+                _context.Pickups.Update(pickup);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            //}
+            //catch
+            //{
+            //    return View(pickup.Id);
+            //}
         }
 
         // GET: Customers/Edit/5
