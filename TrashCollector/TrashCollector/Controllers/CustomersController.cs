@@ -83,6 +83,10 @@ namespace TrashCollector.Controllers
                 return View(new Address());
             }
         }
+        public ActionResult CreatePickup()
+        {
+            return View();
+        }
 
         // GET: Customers/Edit/5
         public ActionResult EditUserInformation(int id)
