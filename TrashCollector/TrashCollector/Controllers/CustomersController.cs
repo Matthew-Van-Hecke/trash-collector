@@ -104,16 +104,21 @@ namespace TrashCollector.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreatePickup(Pickup pickup)
         {
-            //try
-            //{
+            try
+            {
                 _context.Pickups.Add(pickup);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
-            //}
-            //catch
-            //{
-            //    return View(pickup);
-            //}
+            }
+            catch
+            {
+                return View(pickup);
+            }
+        }
+        public ActionResult RequestOneTimeExtraPickup(int pickupId)
+        {
+            Pickup pickup = _context.Pickups.FirstOrDefault(p => p.Id == pickupId);
+            return View(pickup);
         }
 
         // GET: Customers/Edit/5
