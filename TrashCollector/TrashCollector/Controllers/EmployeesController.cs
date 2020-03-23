@@ -18,13 +18,21 @@ namespace TrashCollector.Controllers
         {
             _context = context;
         }
-        public ActionResult Index()
+        public ActionResult Index(int todayId = 0)
         {
             string currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
-            DayOfWeek today = DateTime.Now.DayOfWeek;
-            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode && p.Day.Name == today.ToString()).Include(p => p.Address).ToList();
-
+            employee.Days = _context.Days.ToList();
+            employee.Today = DateTime.Now.DayOfWeek.ToString();
+            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
+            if (todayId == 0)
+            {
+                employee.Pickups = employee.Pickups.Where(p => p.Day.Name == employee.Today).ToList();
+            }
+            else if (todayId != 8)
+            {
+                employee.Pickups = employee.Pickups.Where(p => p.Day_Id == todayId).ToList();
+            }
             //DateTime.Now
 
             return View(employee);

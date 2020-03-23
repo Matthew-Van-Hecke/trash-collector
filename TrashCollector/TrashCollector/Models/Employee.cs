@@ -21,5 +21,9 @@ namespace TrashCollector.Models
         public IEnumerable<IdentityUser> IdentityUsers { get; set; }
         [NotMapped]
         public List<Pickup> Pickups { get; set; }
+        [NotMapped]
+        public string Today { get; set; }
+        [NotMapped]
+        public List<Day> Days { get; set; }
     }
 }

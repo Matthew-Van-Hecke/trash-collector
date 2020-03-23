@@ -7,9 +7,15 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a asp-action="Index" asp-route-todayId="0">TODAY</a> |
+<a asp-action="Index" asp-route-todayId="1">Sunday</a> |
+<a asp-action="Index" asp-route-todayId="2">Monday</a> |
+<a asp-action="Index" asp-route-todayId="3">Tuesday</a> |
+<a asp-action="Index" asp-route-todayId="4">Wednesday</a> |
+<a asp-action="Index" asp-route-todayId="5">Thursday</a> |
+<a asp-action="Index" asp-route-todayId="6">Friday</a> |
+<a asp-action="Index" asp-route-todayId="7">Saturday</a> |
+<a asp-action="Index" asp-route-todayId="8">ALL</a>
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +28,9 @@
             <th>
                 Zip Code
             </th>
-            <th></th>
+            <th>
+                Pickup Day
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -36,6 +44,9 @@
             </td>
             <td>
                 @pickup.Address.Zip_Code
+            </td>
+            <td>
+                @pickup.Day.Name
             </td>
             <td>
                 <a asp-action="MarkComplete" asp-route-id="@pickup.Id">Mark Complete</a> |
