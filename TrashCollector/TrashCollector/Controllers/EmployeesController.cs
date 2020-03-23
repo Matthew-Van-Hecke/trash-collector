@@ -23,19 +23,41 @@ namespace TrashCollector.Controllers
             string currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
             employee.Days = _context.Days.ToList();
-            employee.Today = DateTime.Now.DayOfWeek.ToString();
-            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
+            DateTime today = DateTime.Now;
+            employee.Pickups = new List<Pickup>();
+            GetPickups(employee, today);
             if (todayId == 0)
             {
-                employee.Pickups = employee.Pickups.Where(p => p.Day.Name == employee.Today).ToList();
+                employee.Pickups = employee.Pickups.Where(p => p.Day.Name == today.DayOfWeek.ToString()).ToList();
             }
             else if (todayId != 8)
             {
                 employee.Pickups = employee.Pickups.Where(p => p.Day_Id == todayId).ToList();
             }
-            //DateTime.Now
-
             return View(employee);
+        }
+        private void GetPickups(Employee employee, DateTime today)
+        {
+            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
+            AddRelevantOneTimePickups(employee, today);
+            employee.Pickups.RemoveAll(p => today.CompareTo(p.Start_Of_Pickup_Suspension) >= 0 && today.CompareTo(p.End_Of_Pickup_Suspension) <= 0);
+        }
+        private void AddRelevantOneTimePickups(Employee employee, DateTime today)
+        {
+            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Day > p.Date_Of_Extra_Pickup.Value.Day && today.Day <= p.Date_Of_Extra_Pickup.Value.Day && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
+            List<Pickup> OneTimePickupsToAdd = new List<Pickup>();
+            foreach (Pickup pickup in OneTimePickups)
+            {
+                Day pickupDay = _context.Days.FirstOrDefault(d => d.Name == pickup.Date_Of_Extra_Pickup.Value.DayOfWeek.ToString());
+                Pickup toAdd = new Pickup()
+                {
+                    Address = pickup.Address,
+                    Day = pickupDay,
+                    Day_Id = pickupDay.Id
+                };
+                OneTimePickupsToAdd.Add(toAdd);
+            }
+            employee.Pickups.AddRange(OneTimePickupsToAdd);
         }
 
         // GET: Employees/Details/5
