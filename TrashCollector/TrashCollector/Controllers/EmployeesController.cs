@@ -24,6 +24,7 @@ namespace TrashCollector.Controllers
             Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
             employee.Days = _context.Days.ToList();
             DateTime today = DateTime.Now;
+            SetAllPickupsThatAreNotForTodayToNotPickedUp(today);
             employee.Pickups = new List<Pickup>();
             GetPickups(employee, today);
             if (todayId == 0)
@@ -35,6 +36,18 @@ namespace TrashCollector.Controllers
                 employee.Pickups = employee.Pickups.Where(p => p.Day_Id == todayId).ToList();
             }
             return View(employee);
+        }
+        private void SetAllPickupsThatAreNotForTodayToNotPickedUp(DateTime today)
+        {
+            List<Pickup> allPickups = _context.Pickups.ToList();
+            foreach (Pickup pickup in allPickups)
+            {
+                if (pickup.Day.Name != today.DayOfWeek.ToString())
+                {
+                    pickup.PickedUp = null;
+                }
+            }
+            _context.SaveChanges();
         }
         private void GetPickups(Employee employee, DateTime today)
         {
@@ -64,6 +77,11 @@ namespace TrashCollector.Controllers
         }
         public ActionResult MarkComplete (int id, string day)
         {
+            string today = DateTime.Now.DayOfWeek.ToString();
+            if (today != day)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             Pickup pickup = _context.Pickups.Include(p => p.Customer).Include(p => p.Day).FirstOrDefault(p => p.Id == id);
             if (pickup.Day.Name == day)
             {
