@@ -1,4 +1,4 @@
-﻿@model TrashCollector.Models.Employee
+﻿@model Employee
 
 @{
     ViewData["Title"] = "Index";
@@ -7,25 +7,41 @@
 
 <h1>Index</h1>
 
-<div>
-    <h4>Employee</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ZipCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ZipCode)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Street Name and Number
+            </th>
+            <th>
+                City
+            </th>
+            <th>
+                Zip Code
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var pickup in Model.Pickups) {
+        <tr>
+            <td>
+                @pickup.Address.Street_Number_and_Name
+            </td>
+            <td>
+                @pickup.Address.City
+            </td>
+            <td>
+                @pickup.Address.Zip_Code
+            </td>
+            <td>
+                <a asp-action="MarkComplete" asp-route-id="@pickup.Id">Mark Complete</a> |
+                <a asp-action="Details" asp-route-id="@pickup.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

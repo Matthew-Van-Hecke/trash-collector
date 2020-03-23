@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TrashCollector.Data;
 using TrashCollector.Models;
 
@@ -21,6 +22,8 @@ namespace TrashCollector.Controllers
         {
             string currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
+            DayOfWeek today = DateTime.Now.DayOfWeek;
+            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode && p.Day.Name == today.ToString()).Include(p => p.Address).ToList();
 
             //DateTime.Now
 
