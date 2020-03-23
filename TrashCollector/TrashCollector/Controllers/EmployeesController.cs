@@ -38,7 +38,7 @@ namespace TrashCollector.Controllers
         }
         private void GetPickups(Employee employee, DateTime today)
         {
-            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
+            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode && p.PickedUp == null).Include(p => p.Address).ToList();
             AddRelevantOneTimePickups(employee, today);
             employee.Pickups.RemoveAll(p => today >= p.Start_Of_Pickup_Suspension && today <= p.End_Of_Pickup_Suspension);
         }
@@ -51,6 +51,9 @@ namespace TrashCollector.Controllers
                 Day pickupDay = _context.Days.FirstOrDefault(d => d.Name == pickup.Date_Of_Extra_Pickup.Value.DayOfWeek.ToString());
                 Pickup toAdd = new Pickup()
                 {
+                    Id = pickup.Id,
+                    Customer_Id = pickup.Customer_Id,
+                    Address_Id = pickup.Address_Id,
                     Address = pickup.Address,
                     Day = pickupDay,
                     Day_Id = pickupDay.Id
@@ -59,85 +62,20 @@ namespace TrashCollector.Controllers
             }
             employee.Pickups.AddRange(OneTimePickupsToAdd);
         }
-
-        // GET: Employees/Details/5
-        public ActionResult Details(int id)
+        public ActionResult MarkComplete (int id, string day)
         {
-            return View();
-        }
-
-        // GET: Employees/Create
-        public ActionResult Create()
-        {
-            string idForNewEmployee = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            Employee employee = new Employee()
+            Pickup pickup = _context.Pickups.Include(p => p.Customer).Include(p => p.Day).FirstOrDefault(p => p.Id == id);
+            if (pickup.Day.Name == day)
             {
-                IdentityUser_Id = idForNewEmployee
+                pickup.PickedUp = true;
+            }
+            else
+            {
+                pickup.Date_Of_Extra_Pickup = null;
             };
-            return View(employee);
-        }
-
-        // POST: Employees/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(Employee employee)
-        {
-            try
-            {
-                _context.Employees.Add(employee);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View(employee);
-            }
-        }
-
-        // GET: Employees/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Employees/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Employees/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Employees/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            pickup.Customer.Balance_Due += 20;
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

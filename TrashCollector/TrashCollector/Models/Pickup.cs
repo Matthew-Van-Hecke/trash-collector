@@ -23,6 +23,7 @@ namespace TrashCollector.Models
         public DateTime? Start_Of_Pickup_Suspension { get; set; }
         public DateTime? End_Of_Pickup_Suspension { get; set; }
         public DateTime? Date_Of_Extra_Pickup { get; set; }
+        public bool? PickedUp { get; set; }
         [NotMapped]
         public IEnumerable<Day> Days { get; set; }
         [NotMapped]
