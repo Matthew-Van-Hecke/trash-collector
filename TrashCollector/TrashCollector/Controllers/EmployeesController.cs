@@ -40,7 +40,7 @@ namespace TrashCollector.Controllers
         {
             employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
             AddRelevantOneTimePickups(employee, today);
-            employee.Pickups.RemoveAll(p => today.CompareTo(p.Start_Of_Pickup_Suspension) >= 0 && today.CompareTo(p.End_Of_Pickup_Suspension) <= 0);
+            employee.Pickups.RemoveAll(p => today >= p.Start_Of_Pickup_Suspension && today <= p.End_Of_Pickup_Suspension);
         }
         private void AddRelevantOneTimePickups(Employee employee, DateTime today)
         {
