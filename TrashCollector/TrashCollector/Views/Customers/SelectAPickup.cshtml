@@ -25,7 +25,7 @@
         @foreach (var pickup in Model.Pickups) {
             <tr>
                 <td>
-                    @pickup.Address.City
+                    @pickup.Address.Street_Number_and_Name
                 </td>
                 <td>
                     @pickup.Day.Name
@@ -34,7 +34,7 @@
                     <a asp-action="RequestOneTimeExtraPickup" asp-route-pickupId="@pickup.Id">Add A One Time Pickup</a> |
                     <a asp-action="RequestTemporarySuspension" asp-route-pickupId="@pickup.Id">Request A Temporary Suspension Of Service</a> |
                     <a asp-action="ChangePickupDay" asp-route-pickupId="@pickup.Id">Change Pickup Day</a> |
-                    <a asp-action="Delete" asp-route-id="@pickup.Id">Delete</a>
+                    <a asp-action="DeletePickup" asp-route-pickupId="@pickup.Id">Delete</a>
                 </td>
             </tr>
 }

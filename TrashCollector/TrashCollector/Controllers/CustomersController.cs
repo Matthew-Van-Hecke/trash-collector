@@ -185,50 +185,27 @@ namespace TrashCollector.Controllers
                 return View(pickup.Id);
             }
         }
-        // GET: Customers/Edit/5
-        public ActionResult EditUserInformation(int id)
-        {
-            return View();
-        }
 
-        // POST: Customers/Edit/5
+        public ActionResult DeletePickup(int pickupId)
+        {
+            Pickup pickup = _context.Pickups.Where(p => p.Id == pickupId).Include(p => p.Customer).Include(p => p.Address).Include(p => p.Day).FirstOrDefault();
+            return View(pickup);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditUserInformation(int id, IFormCollection collection)
+        public ActionResult DeletePickup(Pickup pickup)
         {
             try
             {
-                // TODO: Add update logic here
-
+                _context.Pickups.Remove(pickup);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(pickup.Id);
             }
         }
 
-        // GET: Customers/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Customers/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

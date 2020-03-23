@@ -29,7 +29,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="CreatePickup">Add New Pickup</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="SelectAPickup">Add Temporary Suspension or One-Time Extra Pickup</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Customers" asp-action="SelectAPickup">Edit Or Delete a Pickup</a>
                         </li>
                     </ul>
                 </div>
@@ -38,7 +38,8 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            <h1>Welcome Valued Customer!</h1>
+            <h3 style="text-align: center;">Welcome Valued Customer!</h3>
+            <hr />
             @RenderBody()
         </main>
     </div>
