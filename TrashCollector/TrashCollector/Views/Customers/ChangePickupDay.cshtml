@@ -1,0 +1,37 @@
+﻿@model TrashCollector.Models.Pickup
+
+@{
+    ViewData["Title"] = "ChangePickupDay";
+    Layout = "~/Views/Shared/_Layout_Customer.cshtml";
+}
+
+<h1>ChangePickupDay</h1>
+
+<h4>Pickup</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ChangePickupDay">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Customer_Id" />
+            <input type="hidden" asp-for="Address_Id" />
+            <div class="form-group">
+                <label asp-for="Day_Id" class="control-label"></label>
+                <select asp-for="Day_Id" class="form-control" asp-items='new SelectList(Model.Days, "Id", "Name")'></select>
+                <span asp-validation-for="Day_Id" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Start_Of_Pickup_Suspension" />
+            <input type="hidden" asp-for="End_Of_Pickup_Suspension" />
+            <input type="hidden" asp-for="Date_Of_Extra_Pickup" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

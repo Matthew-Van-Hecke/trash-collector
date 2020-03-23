@@ -164,6 +164,27 @@ namespace TrashCollector.Controllers
                 return View(pickup.Id);
             }
         }
+        public ActionResult ChangePickupDay(int pickupId)
+        {
+            Pickup pickup = _context.Pickups.First(p => p.Id == pickupId);
+            pickup.Days = _context.Days.ToList();
+            return View(pickup);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePickupDay(Pickup pickup)
+        {
+            try
+            {
+                _context.Pickups.Update(pickup);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View(pickup.Id);
+            }
+        }
         // GET: Customers/Edit/5
         public ActionResult EditUserInformation(int id)
         {
