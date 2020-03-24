@@ -103,12 +103,13 @@ namespace TrashCollector.Controllers
             List<Address> addresses = _context.Addresses.Where(a => a.Customer_Id == id && a.Zip_Code == employeeZipCode).Include(a => a.Customer).ToList();
             return View(addresses);
         }
-        //private string GetURLVerionOfAddress(Address address)
-        //{
-        //    string lineOne = address.Street_Number_and_Name;
-        //    string city = address.City;
-        //    string state = address.State.Name;
-        //    string zip = address.Zip_Code.ToString();
-        //}
+        private string GetURLVerionOfAddress(Address address)
+        {
+            string lineOne = address.Street_Number_and_Name;
+            string city = address.City;
+            string state = address.State.Name;
+            string zip = address.Zip_Code.ToString();
+            return "tempstring";
+        }
     }
 }
