@@ -51,7 +51,7 @@ namespace TrashCollector.Controllers
         }
         private void GetPickups(Employee employee, DateTime today)
         {
-            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode && p.PickedUp == null).Include(p => p.Address).ToList();
+            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode && p.PickedUp == null).Include(p => p.Address).Include(p => p.Address.Customer).ToList();
             AddRelevantOneTimePickups(employee, today);
             employee.Pickups.RemoveAll(p => today >= p.Start_Of_Pickup_Suspension && today <= p.End_Of_Pickup_Suspension);
         }
@@ -122,9 +122,12 @@ namespace TrashCollector.Controllers
         }
         public ActionResult DisplayCustomerDetails(int id)
         {
+            GoogleAPIKey keyClass = new GoogleAPIKey();
+            string myKey = keyClass.Key;
             string identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             int employeeZipCode = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == identityUserId).ZipCode;
             List<Address> addresses = _context.Addresses.Where(a => a.Customer_Id == id && a.Zip_Code == employeeZipCode).Include(a => a.Customer).ToList();
+            addresses[0].APIKey = "https://maps.googleapis.com/maps/api/js?key=" + myKey + "&callback=initMap";
             return View(addresses);
         }
         //private string GetURLVerionOfAddress(Address address)

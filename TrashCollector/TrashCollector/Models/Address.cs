@@ -26,5 +26,7 @@ namespace TrashCollector.Models
         public IEnumerable<USState> USStates { get; set; }
         [NotMapped]
         public IEnumerable<Customer> Customers { get; set; }
+        [NotMapped]
+        public string APIKey { get; set; }
     }
 }
