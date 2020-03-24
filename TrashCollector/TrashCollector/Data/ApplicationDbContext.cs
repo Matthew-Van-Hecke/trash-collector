@@ -27,13 +27,17 @@ namespace TrashCollector.Data
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {
+                    Id = "8b6f421d-acb0-4e20-ab83-05e9c4aa44c2",
                     Name = "Customer",
-                    NormalizedName = "CUSTOMER"
+                    NormalizedName = "CUSTOMER",
+                    ConcurrencyStamp = "db2af3c0-3a7e-4e90-add5-d1080e26ec43"
                 },
                 new IdentityRole
                 {
+                    Id = "c3511e67-5c87-4a06-9aca-5189dfb38757",
                     Name = "Employee",
-                    NormalizedName = "EMPLOYEE"
+                    NormalizedName = "EMPLOYEE",
+                    ConcurrencyStamp = "ccd699a7-1834-4a72-a769-c330791a1edd"
                 }
                 );
             builder.Entity<Day>().HasData(

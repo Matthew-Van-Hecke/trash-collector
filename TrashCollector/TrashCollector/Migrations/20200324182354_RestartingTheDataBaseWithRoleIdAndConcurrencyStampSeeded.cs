@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TrashCollector.Migrations
 {
-    public partial class ClearedDataBaseAndRemovedCustomerIdFromPickupModel : Migration
+    public partial class RestartingTheDataBaseWithRoleIdAndConcurrencyStampSeeded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -284,8 +284,8 @@ namespace TrashCollector.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "6d1304f2-7faa-43d8-9048-e4a346f9fcdc", "6c8522c4-ab39-44cd-8732-7605dc8d9ba3", "Customer", "CUSTOMER" },
-                    { "aefc0e4e-b379-46d8-8f07-8eaaa8a87d32", "71ea9cc8-68a4-4a85-9506-1a33cfe8e179", "Employee", "EMPLOYEE" }
+                    { "8b6f421d-acb0-4e20-ab83-05e9c4aa44c2", "db2af3c0-3a7e-4e90-add5-d1080e26ec43", "Customer", "CUSTOMER" },
+                    { "c3511e67-5c87-4a06-9aca-5189dfb38757", "ccd699a7-1834-4a72-a769-c330791a1edd", "Employee", "EMPLOYEE" }
                 });
 
             migrationBuilder.InsertData(
