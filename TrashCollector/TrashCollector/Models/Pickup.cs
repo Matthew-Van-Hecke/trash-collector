@@ -11,9 +11,6 @@ namespace TrashCollector.Models
     {
         [Key]
         public int Id { get; set; }
-        [ForeignKey("Customer")]
-        public int Customer_Id { get; set; }
-        public Customer Customer { get; set; }
         [ForeignKey("Address")]
         public int Address_Id { get; set; }
         public Address Address { get; set; }

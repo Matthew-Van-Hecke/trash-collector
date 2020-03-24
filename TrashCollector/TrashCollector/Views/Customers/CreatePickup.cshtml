@@ -13,7 +13,6 @@
     <div class="col-md-4">
         <form asp-action="CreatePickup">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Customer_Id" />
             <div class="form-group">
                 <label asp-for="Address_Id" class="control-label"></label>
                 <select asp-for="Address_Id" class ="form-control" asp-items='new SelectList(Model.Addresses, "Id", "Single_Line_Address")'></select>

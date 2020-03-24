@@ -57,7 +57,7 @@ namespace TrashCollector.Controllers
         }
         private void AddRelevantOneTimePickups(Employee employee, DateTime today)
         {
-            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Day > p.Date_Of_Extra_Pickup.Value.Day && today.Day <= p.Date_Of_Extra_Pickup.Value.Day && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).Include(p => p.Customer).ToList();
+            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Day > p.Date_Of_Extra_Pickup.Value.Day && today.Day <= p.Date_Of_Extra_Pickup.Value.Day && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).Include(p => p.Address.Customer).ToList();
             List<Pickup> OneTimePickupsToAdd = new List<Pickup>();
             foreach (Pickup pickup in OneTimePickups)
             {
@@ -65,8 +65,6 @@ namespace TrashCollector.Controllers
                 Pickup toAdd = new Pickup()
                 {
                     Id = pickup.Id,
-                    Customer_Id = pickup.Customer_Id,
-                    Customer = pickup.Customer,
                     Address_Id = pickup.Address_Id,
                     Address = pickup.Address,
                     Day = pickupDay,
@@ -76,6 +74,32 @@ namespace TrashCollector.Controllers
             }
             employee.Pickups.AddRange(OneTimePickupsToAdd);
         }
+        public ActionResult Create()
+        {
+            string idForNewEmployee = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Employee employee = new Employee()
+            {
+                IdentityUser_Id = idForNewEmployee
+            };
+            return View(employee);
+        }
+
+        // POST: Employees/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Employee employee)
+        {
+            try
+            {
+                _context.Employees.Add(employee);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View(employee);
+            }
+        }
         public ActionResult MarkComplete (int id, string day)
         {
             string today = DateTime.Now.DayOfWeek.ToString();
@@ -83,7 +107,7 @@ namespace TrashCollector.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            Pickup pickup = _context.Pickups.Include(p => p.Customer).Include(p => p.Day).FirstOrDefault(p => p.Id == id);
+            Pickup pickup = _context.Pickups.Include(p => p.Address.Customer).Include(p => p.Day).FirstOrDefault(p => p.Id == id);
             if (pickup.Day.Name == day)
             {
                 pickup.PickedUp = true;
@@ -92,7 +116,7 @@ namespace TrashCollector.Controllers
             {
                 pickup.Date_Of_Extra_Pickup = null;
             };
-            pickup.Customer.Balance_Due += 20;
+            pickup.Address.Customer.Balance_Due += 20;
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
@@ -103,13 +127,13 @@ namespace TrashCollector.Controllers
             List<Address> addresses = _context.Addresses.Where(a => a.Customer_Id == id && a.Zip_Code == employeeZipCode).Include(a => a.Customer).ToList();
             return View(addresses);
         }
-        private string GetURLVerionOfAddress(Address address)
-        {
-            string lineOne = address.Street_Number_and_Name;
-            string city = address.City;
-            string state = address.State.Name;
-            string zip = address.Zip_Code.ToString();
-            return "tempstring";
-        }
+        //private string GetURLVerionOfAddress(Address address)
+        //{
+        //    string lineOne = address.Street_Number_and_Name;
+        //    string city = address.City;
+        //    string state = address.State.Name;
+        //    string zip = address.Zip_Code.ToString();
+        //    return "tempstring";
+        //}
     }
 }

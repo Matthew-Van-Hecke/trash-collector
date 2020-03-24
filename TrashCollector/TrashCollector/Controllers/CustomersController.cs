@@ -95,7 +95,7 @@ namespace TrashCollector.Controllers
             }
             Pickup pickup = new Pickup()
             {
-                Customer_Id = _context.Customers.FirstOrDefault(c => c.IdentityUser_Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Id,
+                Address = _context.Addresses.FirstOrDefault(a => a.Customer.IdentityUser_Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier)),
                 Days = days,
                 Addresses = addresses
             };
@@ -121,7 +121,7 @@ namespace TrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Customer customer = _context.Customers.FirstOrDefault(c => c.IdentityUser_Id == userId);
-            customer.Pickups = _context.Pickups.Include(c => c.Address).Include(p => p.Day).Where(p => p.Customer_Id == customer.Id).ToList();
+            customer.Pickups = _context.Pickups.Include(c => c.Address).Include(p => p.Day).Where(p => p.Address.Customer_Id == customer.Id).ToList();
             return View(customer);
         }
         public ActionResult RequestOneTimeExtraPickup(int pickupId)
@@ -188,7 +188,7 @@ namespace TrashCollector.Controllers
 
         public ActionResult DeletePickup(int pickupId)
         {
-            Pickup pickup = _context.Pickups.Where(p => p.Id == pickupId).Include(p => p.Customer).Include(p => p.Address).Include(p => p.Day).FirstOrDefault();
+            Pickup pickup = _context.Pickups.Where(p => p.Id == pickupId).Include(p => p.Address.Customer).Include(p => p.Address).Include(p => p.Day).FirstOrDefault();
             return View(pickup);
         }
         [HttpPost]

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
-namespace TrashCollector.Data.Migrations
+namespace TrashCollector.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200320141339_MadeStartEndAndExtraDatesInPickupNullable")]
-    partial class MadeStartEndAndExtraDatesInPickupNullable
+    [Migration("20200324162848_ClearedDataBaseAndRemovedCustomerIdFromPickupModel")]
+    partial class ClearedDataBaseAndRemovedCustomerIdFromPickupModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,15 +50,15 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "24fc53aa-7e4d-4e07-ae3f-d4f7262874be",
-                            ConcurrencyStamp = "e7884ef1-e7b8-4a97-8fbb-29b2d41ee0fa",
+                            Id = "6d1304f2-7faa-43d8-9048-e4a346f9fcdc",
+                            ConcurrencyStamp = "6c8522c4-ab39-44cd-8732-7605dc8d9ba3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "acb4cd9f-386e-453e-a75a-e00e6d7608e6",
-                            ConcurrencyStamp = "6030451f-0804-41e0-af5c-84122832e828",
+                            Id = "aefc0e4e-b379-46d8-8f07-8eaaa8a87d32",
+                            ConcurrencyStamp = "71ea9cc8-68a4-4a85-9506-1a33cfe8e179",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -372,26 +372,24 @@ namespace TrashCollector.Data.Migrations
                     b.Property<int>("Address_Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Customer_Id")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date_Of_Extra_Pickup")
+                    b.Property<DateTime?>("Date_Of_Extra_Pickup")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Day_Id")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("End_Of_Pickup_Suspension")
+                    b.Property<DateTime?>("End_Of_Pickup_Suspension")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Start_Of_Pickup_Suspension")
+                    b.Property<bool?>("PickedUp")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("Start_Of_Pickup_Suspension")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Address_Id");
-
-                    b.HasIndex("Customer_Id");
 
                     b.HasIndex("Day_Id");
 
@@ -750,12 +748,6 @@ namespace TrashCollector.Data.Migrations
                     b.HasOne("TrashCollector.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("Address_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrashCollector.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("Customer_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

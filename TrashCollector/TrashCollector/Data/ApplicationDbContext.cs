@@ -14,7 +14,7 @@ namespace TrashCollector.Data
             : base(options)
         {
         }
-        public DbSet<IdentityRole> IdentityRoles { get; set; }
+        
         public DbSet<Pickup> Pickups { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
