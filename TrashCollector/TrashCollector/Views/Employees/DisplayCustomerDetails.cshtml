@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TrashCollector.Models.Address>
+
+@{
+    ViewData["Title"] = "DisplayCustomerDetails";
+    Layout = "~/Views/Shared/_Layout_Employee.cshtml";
+}
+
+<h1>DisplayCustomerDetails</h1>
+
+<h3>@Model.ToList()[0].Customer.Name</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Street_Number_and_Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Zip_Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Street_Number_and_Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Zip_Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.Id)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<a asp-action="Index">Return to Index</a>

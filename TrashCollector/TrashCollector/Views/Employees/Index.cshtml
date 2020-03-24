@@ -31,6 +31,9 @@
             <th>
                 Pickup Day
             </th>
+            <th>
+                Customer
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +50,9 @@
             </td>
             <td>
                 @pickup.Day.Name
+            </td>
+            <td>
+                <a asp-action="DisplayCustomerDetails" asp-route-id="@pickup.Customer_Id">@pickup.Customer.Name</a>
             </td>
             <td>
                 <a asp-action="MarkComplete" asp-route-id="@pickup.Id" asp-route-day="@pickup.Day.Name">Mark Complete</a>

@@ -57,7 +57,7 @@ namespace TrashCollector.Controllers
         }
         private void AddRelevantOneTimePickups(Employee employee, DateTime today)
         {
-            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Day > p.Date_Of_Extra_Pickup.Value.Day && today.Day <= p.Date_Of_Extra_Pickup.Value.Day && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).ToList();
+            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Day > p.Date_Of_Extra_Pickup.Value.Day && today.Day <= p.Date_Of_Extra_Pickup.Value.Day && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).Include(p => p.Customer).ToList();
             List<Pickup> OneTimePickupsToAdd = new List<Pickup>();
             foreach (Pickup pickup in OneTimePickups)
             {
@@ -66,6 +66,7 @@ namespace TrashCollector.Controllers
                 {
                     Id = pickup.Id,
                     Customer_Id = pickup.Customer_Id,
+                    Customer = pickup.Customer,
                     Address_Id = pickup.Address_Id,
                     Address = pickup.Address,
                     Day = pickupDay,
@@ -94,6 +95,13 @@ namespace TrashCollector.Controllers
             pickup.Customer.Balance_Due += 20;
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+        public ActionResult DisplayCustomerDetails(int id)
+        {
+            string identityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int employeeZipCode = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == identityUserId).ZipCode;
+            List<Address> addresses = _context.Addresses.Where(a => a.Customer_Id == id && a.Zip_Code == employeeZipCode).Include(a => a.Customer).ToList();
+            return View(addresses);
         }
     }
 }
