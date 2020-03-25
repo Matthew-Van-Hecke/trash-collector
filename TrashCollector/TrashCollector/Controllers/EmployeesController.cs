@@ -24,6 +24,8 @@ namespace TrashCollector.Controllers
         {
             string currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee employee = _context.Employees.FirstOrDefault(e => e.IdentityUser_Id == currentUserId);
+            string myKey = new GoogleAPIKey().Key;
+            ViewBag.Key = "https://maps.googleapis.com/maps/api/js?key=" + myKey + "&callback=initMap";
             employee.Days = _context.Days.ToList();
             DateTime today = DateTime.Now;
             SetAllPickupsThatAreNotForTodayToNotPickedUp(today);
