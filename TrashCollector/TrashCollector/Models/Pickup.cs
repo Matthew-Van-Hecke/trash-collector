@@ -12,6 +12,7 @@ namespace TrashCollector.Models
         [Key]
         public int Id { get; set; }
         [ForeignKey("Address")]
+        [Display(Name = "Address")]
         public int Address_Id { get; set; }
         public Address Address { get; set; }
         [ForeignKey("Day")]

@@ -210,7 +210,7 @@ namespace TrashCollector.Controllers
             }
             catch
             {
-                return View(pickup.Id);
+                return View(pickup);
             }
         }
 

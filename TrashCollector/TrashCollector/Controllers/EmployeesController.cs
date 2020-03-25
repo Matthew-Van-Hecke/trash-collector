@@ -31,6 +31,7 @@ namespace TrashCollector.Controllers
             SetAllPickupsThatAreNotForTodayToNotPickedUp(today);
             employee.Pickups = new List<Pickup>();
             GetPickups(employee, today);
+            employee.Pickups = employee.Pickups.Where(p => p.PickedUp == null).OrderBy(p => p.Day_Id).ToList();
             if (todayId == 0)
             {
                 employee.Pickups = employee.Pickups.Where(p => p.Day.Name == today.DayOfWeek.ToString()).ToList();
@@ -55,13 +56,14 @@ namespace TrashCollector.Controllers
         }
         private void GetPickups(Employee employee, DateTime today)
         {
-            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode && p.PickedUp == null).Include(p => p.Address).Include(p => p.Address.Customer).ToList();
+            employee.Pickups = _context.Pickups.Where(p => p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).Include(p => p.Address.Customer).ToList();
             AddRelevantOneTimePickups(employee, today);
             employee.Pickups.RemoveAll(p => today >= p.Start_Of_Pickup_Suspension && today <= p.End_Of_Pickup_Suspension);
+            _context.SaveChanges();
         }
         private void AddRelevantOneTimePickups(Employee employee, DateTime today)
         {
-            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Day > p.Date_Of_Extra_Pickup.Value.Day && today.Day <= p.Date_Of_Extra_Pickup.Value.Day && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).Include(p => p.Address.Customer).ToList();
+            List<Pickup> OneTimePickups = _context.Pickups.Where(p => today.AddDays(7).Date > p.Date_Of_Extra_Pickup.Value.Date && today.Date <= p.Date_Of_Extra_Pickup.Value.Date && p.Address.Zip_Code == employee.ZipCode).Include(p => p.Address).Include(p => p.Address.Customer).ToList();
             List<Pickup> OneTimePickupsToAdd = new List<Pickup>();
             foreach (Pickup pickup in OneTimePickups)
             {
@@ -72,11 +74,13 @@ namespace TrashCollector.Controllers
                     Address_Id = pickup.Address_Id,
                     Address = pickup.Address,
                     Day = pickupDay,
-                    Day_Id = pickupDay.Id
+                    Day_Id = pickupDay.Id,
+                    PickedUp = null
                 };
                 OneTimePickupsToAdd.Add(toAdd);
             }
             employee.Pickups.AddRange(OneTimePickupsToAdd);
+            _context.SaveChanges();
         }
         public ActionResult Create()
         {
