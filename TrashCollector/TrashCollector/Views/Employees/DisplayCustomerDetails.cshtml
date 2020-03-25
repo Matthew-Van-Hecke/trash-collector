@@ -52,17 +52,25 @@
         }
     </tbody>
 </table>
-<div id="map" style="height: 400px;"></div>
-<a asp-action="Index">Return to Index</a>
-<script>
-    var map;
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8
-        });
-        var marker = new google.maps.Marker({ position: { lat: -34.397, lng: 150.644 }, map: map });
-    }
-</script>
-<script src=@Model.ToList()[0].APIKey
-        async defer></script>
+
+    <a asp-action="Index">Return to Index</a>
+
+
+    <div id="map" style="height: 400px; width:auto;"></div>
+    <script>
+
+                        var map;
+                        function initMap() {
+                            var coordinatesString = "@Model.ToList()[0].Coordinates";
+                            var coordinates = coordinatesString.split(" ");
+                            map = new google.maps.Map(document.getElementById('map'), {
+                                center: { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) },
+                                zoom: 14
+                            });
+
+                                var marker = new google.maps.Marker({ position: { lat: parseFloat(coordinates[0]), lng: parseFloat(coordinates[1]) }, map: map });
+                        }
+    </script>
+    <script src=@Model.ToList()[0].APIKey
+            async defer></script>
+}

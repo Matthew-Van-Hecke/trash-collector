@@ -100,7 +100,7 @@ namespace TrashCollector.Controllers
                 var data = await response.Content.ReadAsStringAsync();
                 JObject dataAsJObject = JsonConvert.DeserializeObject<JObject>(data);
                 string lat = dataAsJObject["results"][0]["geometry"]["location"]["lat"].ToString();
-                string lng = dataAsJObject["results"][0]["geometry"]["location"]["lat"].ToString();
+                string lng = dataAsJObject["results"][0]["geometry"]["location"]["lng"].ToString();
                 return lat + " " + lng;
             }
         }
