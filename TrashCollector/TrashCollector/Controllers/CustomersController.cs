@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using TrashCollector.Data;
 using TrashCollector.Models;
 
@@ -73,16 +77,40 @@ namespace TrashCollector.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CreateAddress(Address address)
         {
+            ApplicationDbContext context = _context;
             try
             {
-                _context.Addresses.Add(address);
-                _context.SaveChanges();
+                address.Coordinates = GeocodeAddress(address).Result;
+                Thread.Sleep(500);
+                context.Addresses.Add(address);
+                context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
                 return View(new Address());
             }
+        }
+        private async Task<string> GeocodeAddress(Address address)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string apiKey = new GoogleAPIKey().Key;
+                HttpResponseMessage response = await client.GetAsync("https://maps.googleapis.com/maps/api/geocode/json?address=" + GetURLVerionOfAddress(address) + "&key=" + apiKey);
+                var data = await response.Content.ReadAsStringAsync();
+                JObject dataAsJObject = JsonConvert.DeserializeObject<JObject>(data);
+                string lat = dataAsJObject["results"][0]["geometry"]["location"]["lat"].ToString();
+                string lng = dataAsJObject["results"][0]["geometry"]["location"]["lat"].ToString();
+                return lat + " " + lng;
+            }
+        }
+        private string GetURLVerionOfAddress(Address address)
+        {
+            string lineOne = address.Street_Number_and_Name.Replace(' ', '+') + ",+";
+            string city = address.City + ",+";
+            string state = _context.USStates.FirstOrDefault(s => s.Id == address.USStateId).Name + "+";
+            string zip = address.Zip_Code.ToString();
+            return lineOne + city + state + zip;
         }
         public ActionResult CreatePickup()
         {

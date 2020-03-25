@@ -20,6 +20,7 @@ namespace TrashCollector.Models
         [ForeignKey("Customer")]
         public int Customer_Id { get; set; }
         public Customer Customer { get; set; }
+        public string Coordinates { get; set; }
         [NotMapped]
         public string Single_Line_Address { get; set; }
         [NotMapped]

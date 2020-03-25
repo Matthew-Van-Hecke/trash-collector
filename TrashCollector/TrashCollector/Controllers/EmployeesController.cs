@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using TrashCollector.Data;
 using TrashCollector.Models;
 
@@ -130,13 +132,6 @@ namespace TrashCollector.Controllers
             addresses[0].APIKey = "https://maps.googleapis.com/maps/api/js?key=" + myKey + "&callback=initMap";
             return View(addresses);
         }
-        //private string GetURLVerionOfAddress(Address address)
-        //{
-        //    string lineOne = address.Street_Number_and_Name;
-        //    string city = address.City;
-        //    string state = address.State.Name;
-        //    string zip = address.Zip_Code.ToString();
-        //    return "tempstring";
-        //}
+
     }
 }
